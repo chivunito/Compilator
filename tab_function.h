@@ -10,6 +10,8 @@ void print_table_function();
 
 int get_nb_params();
 
+int get_params(char* name);
+
 /*Prend le nom en paramètre et retourne l'adresse (la ligne instruction) de la fonction */
 int get_function_address (char* name);
 

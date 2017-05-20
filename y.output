@@ -48,7 +48,7 @@
 
   26  While : Twhile $$8 TPo E TPf $$9 BodyBoucle
 
-  27  Invoc : Tprint TPo Tid TPf
+  27  Invoc : Tprint TPo E TPf
 
   28  $$10 :
 
@@ -95,7 +95,7 @@
   59  ParamNext :
   60            | Tvir E ParamNext
 
-  61  For : Tfor TPo Decl1 Tpv E Tpv Instr TPf Bodyboucle
+  61  For : Tfor TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle
 
 state 0
 	$accept : . Prg $end  (0)
@@ -408,7 +408,7 @@ state 34
 
 
 state 35
-	For : Tfor . TPo Decl1 Tpv E Tpv Instr TPf Bodyboucle  (61)
+	For : Tfor . TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle  (61)
 
 	TPo  shift 52
 	.  error
@@ -433,7 +433,7 @@ state 37
 
 
 state 38
-	Invoc : Tprint . TPo Tid TPf  (27)
+	Invoc : Tprint . TPo E TPf  (27)
 
 	TPo  shift 56
 	.  error
@@ -560,7 +560,7 @@ state 51
 
 
 state 52
-	For : Tfor TPo . Decl1 Tpv E Tpv Instr TPf Bodyboucle  (61)
+	For : Tfor TPo . Decl1 Tpv E Tpv Instr TPf BodyBoucle  (61)
 
 	Tid  shift 30
 	.  error
@@ -598,10 +598,16 @@ state 55
 
 
 state 56
-	Invoc : Tprint TPo . Tid TPf  (27)
+	Invoc : Tprint TPo . E TPf  (27)
 
-	Tid  shift 74
+	TPo  shift 65
+	Tnumber  shift 66
+	Tid  shift 67
+	Tprint  shift 38
 	.  error
+
+	E  goto 74
+	Invoc  goto 69
 
 
 state 57
@@ -751,7 +757,7 @@ state 69
 
 
 state 70
-	For : Tfor TPo Decl1 . Tpv E Tpv Instr TPf Bodyboucle  (61)
+	For : Tfor TPo Decl1 . Tpv E Tpv Instr TPf BodyBoucle  (61)
 
 	Tpv  shift 90
 	.  error
@@ -810,9 +816,27 @@ state 73
 
 
 state 74
-	Invoc : Tprint TPo Tid . TPf  (27)
+	Invoc : Tprint TPo E . TPf  (27)
+	E : E . Tplus E  (46)
+	E : E . Tless E  (47)
+	E : E . Tfois E  (48)
+	E : E . Tdiv E  (49)
+	E : E . Tcmp E  (50)
+	E : E . Tinf E  (51)
+	E : E . Tsup E  (52)
+	E : E . Tand E  (53)
+	E : E . Tor E  (54)
 
+	Tcmp  shift 80
+	Tinf  shift 81
+	Tsup  shift 82
 	TPf  shift 94
+	Tplus  shift 84
+	Tless  shift 85
+	Tdiv  shift 86
+	Tfois  shift 87
+	Tand  shift 88
+	Tor  shift 89
 	.  error
 
 
@@ -1035,7 +1059,7 @@ state 89
 
 
 state 90
-	For : Tfor TPo Decl1 Tpv . E Tpv Instr TPf Bodyboucle  (61)
+	For : Tfor TPo Decl1 Tpv . E Tpv Instr TPf BodyBoucle  (61)
 
 	TPo  shift 65
 	Tnumber  shift 66
@@ -1108,7 +1132,7 @@ state 93
 
 
 state 94
-	Invoc : Tprint TPo Tid TPf .  (27)
+	Invoc : Tprint TPo E TPf .  (27)
 
 	.  reduce 27
 
@@ -1364,7 +1388,7 @@ state 108
 	E : E . Tsup E  (52)
 	E : E . Tand E  (53)
 	E : E . Tor E  (54)
-	For : Tfor TPo Decl1 Tpv E . Tpv Instr TPf Bodyboucle  (61)
+	For : Tfor TPo Decl1 Tpv E . Tpv Instr TPf BodyBoucle  (61)
 
 	Tcmp  shift 80
 	Tinf  shift 81
@@ -1441,7 +1465,7 @@ state 116
 
 
 state 117
-	For : Tfor TPo Decl1 Tpv E Tpv . Instr TPf Bodyboucle  (61)
+	For : Tfor TPo Decl1 Tpv E Tpv . Instr TPf BodyBoucle  (61)
 
 	Tif  shift 34
 	Tfor  shift 35
@@ -1512,7 +1536,7 @@ state 120
 
 
 state 121
-	For : Tfor TPo Decl1 Tpv E Tpv Instr . TPf Bodyboucle  (61)
+	For : Tfor TPo Decl1 Tpv E Tpv Instr . TPf BodyBoucle  (61)
 
 	TPf  shift 125
 	.  error
@@ -1551,10 +1575,12 @@ state 124
 
 
 state 125
-	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf . Bodyboucle  (61)
+	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf . BodyBoucle  (61)
 
-	Bodyboucle  shift 127
+	TAo  shift 115
 	.  error
+
+	BodyBoucle  goto 127
 
 
 state 126
@@ -1565,7 +1591,7 @@ state 126
 
 
 state 127
-	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf Bodyboucle .  (61)
+	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle .  (61)
 
 	.  reduce 61
 
@@ -1576,5 +1602,5 @@ state 128
 	.  reduce 17
 
 
-32 terminals, 34 nonterminals
+31 terminals, 34 nonterminals
 62 grammar rules, 129 states

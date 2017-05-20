@@ -36,7 +36,6 @@ int jump_if(int E) {
 }
 
 void jump_fin_fct(int adress_ret){
-	int params=get_nb_params();
 	instruction(LOAD,r1,adress_ret,-1);
 	instruction(JMP,r1,-1,-1);
 }
@@ -79,13 +78,22 @@ int maj_while_jmpc(int instruction2modify,int instructionJump){
 */
 void affectation(char* A,int E){ 
 	instruction(LOAD,r0, E,-1);
-	int	addr=initialize_symbol(A);
+	int	addr=get_symbol_address(A);
+		printf("adresse de %c, %d ",A,addr);
 	if (addr==-1) {
 		printf("Variable : %s  pas déclarée", A);
 	}
 	instruction(STORE,addr,r0,-1);
 	pull_symbol(); 
 }
+
+void affectationDeclaration(char* A,int E){ 
+	instruction(LOAD,r0, E,-1);
+	int	addr=initialize_symbol(A);
+	instruction(STORE,addr,r0,-1);
+	pull_symbol(); 
+}
+
 //____________________________Les instructions__________________________________// 
 /*Nous ne sommes pas obligés de passer les adresses des variables temporaires, en effet, ceux sont les deux dernières en têtes de pile*/
 //Addition

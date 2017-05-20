@@ -22,6 +22,10 @@ void print_table_symbol();
 int pull_symbol(){
 	return --sommet;
 }
+int pull_args(int nb){
+	sommet=sommet-nb;
+	return sommet;
+}
 
 void increase_depth() {
 	depth++;
@@ -77,7 +81,7 @@ int initialize_symbol(char *name){
 
 int initialized(char *name){
 	int i;
-	for (i = 0; i < sommet; ++i)
+	for (i = 0; i <= sommet; ++i)
 	{
 		if (!strcmp(tab[i].name,name)) {
 			return tab[i].initialized;
@@ -86,12 +90,16 @@ int initialized(char *name){
 	return -1;
 }
 
-void destroy_context(int depth){
-	int i = sommet;
-	while(tab[i].depth = depth){
+void destroy_context(){
+	int i = sommet-1;
+	//printf("Avant destruction du contexte");
+	////print_table_symbol();
+	while(tab[i].depth == depth){		
 		i--;
 	}
-	sommet = i;
+	sommet = i+1;
+	//printf("Après destruction du contexte");
+	//print_table_symbol();
 }
 
 int add_symbol(char *name,int size){
@@ -146,7 +154,7 @@ void print_symbol (symbole s) {
 }
 
 void print_table_symbol() {
-	printf("Table des symboles : \n");
+	printf("Table des symboles (sommet = %d): \n", sommet);
 	int i;
 	for (i=0;i<sommet;i++) {
 		print_symbol(tab[i]);

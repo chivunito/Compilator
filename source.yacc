@@ -24,7 +24,6 @@ int main()
         print_table_function();
         print_table_symbol();
         print_table_instruction();
-
 } 
 
 %}
@@ -64,7 +63,6 @@ Fct :  Tint Tmain{set_PC();} TPo Args TPf BodyMain   /*setPC permet d'initialise
 		}
 	TPf BodyFct
 		{
-			decrease_depth();
 			jump_fin_fct(get_nb_params());/*instruction(JMP,FFF,-1,-1);*/
 			flush_tab_symbol();  /*Une fois parsée, on peut flush la tab des symboles */ 
 		}
@@ -85,9 +83,9 @@ BodyMain : TAo Decls Instrs Return TAf
 				jump_fin_main();
 			}
 	
-BodyFct : TAo{increase_depth();} Decls Instrs Return TAf{decrease_depth();} 
+BodyFct : TAo{increase_depth();} Decls Instrs Return TAf{destroy_context() ;decrease_depth();} 
 
-BodyBoucle : TAo{increase_depth();} Decls Instrs TAf{decrease_depth();} 
+BodyBoucle : TAo{increase_depth();} Decls Instrs TAf{destroy_context() ;decrease_depth();} 
 			
 
 Return : Treturn E{instruction(LOAD,r5,$2,0);} Tpv ;
@@ -97,7 +95,7 @@ Instrs :
 	
 If :  Tif TPo E TPf 
 			{
-				printf("> IF : \n" ); $1=jump_if($3); pull_symbol(); increase_depth();
+				$1=jump_if($3); pull_symbol();
 			} 
 				BodyBoucle 
 			{
@@ -112,14 +110,13 @@ While : Twhile
 				{
 					$3=jump_if($4);
 					pull_symbol();
-					increase_depth();
 				}
 					BodyBoucle
 				{
 					maj_while_jmpc($3,$1);
 				}; 
 
-Invoc : Tprint TPo Tid TPf ;
+Invoc : Tprint TPo E TPf ;
 			| Tid TPo 
 				{
 					$2=get_tabsymbol_size(); /* Sommet de la table des symboles avant d'y ajouter les variables temporaires associées au paramètres de la fonction invoqué */
@@ -127,12 +124,15 @@ Invoc : Tprint TPo Tid TPf ;
 			Params TPf
 				{
 					function_call($1,$2);
+					pull_args(get_params($1));
 				}; 
 				
 				
 Aff : Tid Tegal E 
 			{ 
+			
 				affectation($1,$3); 
+
 			} ; 
 			
 			
@@ -146,7 +146,7 @@ Decl1 : Tid
 			}
 	Tegal E 
 			{
-				affectation($1,$4);
+				affectationDeclaration($1,$4);
 			};
 			
 			
@@ -171,7 +171,7 @@ E : Tnumber
 		}
 	| Tid
 		{ // Tid => VarTemp : il faut check qu'elle soit initialized
-			if (initialized($1)==1) {
+			if (initialized($1)!=-1) {
 			 printf(" E : Tid : Addresse du symbole = %d \n" ,get_symbol_address($1));
 			instruction(LOAD,r0,get_symbol_address($1),0);
 			$$=add_var_temp(1);
@@ -224,5 +224,5 @@ Params :
 	| E ParamNext;
 ParamNext : 
 	| Tvir E ParamNext;
-For : Tfor TPo Decl1 Tpv E Tpv Instr TPf Bodyboucle;
+For : Tfor TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle;
 %%

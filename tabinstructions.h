@@ -25,7 +25,9 @@ int set_PC();
 //Addition
 int instruction(int instruction, int A,int B, int C) ;
 
-void affectation(char* $A,int $E); 
+void affectation(char* $A,int $E);
+
+void affectationDeclaration(char* A,int E); 
 
 int get_sommet_instr();
 

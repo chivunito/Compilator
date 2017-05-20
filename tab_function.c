@@ -45,10 +45,20 @@ int get_nb_params(){
 	return fonctions[sommettabF-1].nb_params;
 }
 
+int get_params(char* name){
+	int i;
+	for (i = 0; i < sommettabF; ++i)
+	{
+		if (!strcmp(fonctions[i].name,name)) {
+			return fonctions[i].nb_params;
+		}
+	}
+}
+
+
 void print_function(function f){
  			printf(">FunctionID: %s, addr_instruction : %d, nb_params %d \n", f.name, f.address,f.nb_params);
  }
-	
 
 void print_table_function(){
 	printf("Table des fonctions : \n");

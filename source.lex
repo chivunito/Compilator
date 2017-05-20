@@ -37,4 +37,5 @@ return		return Treturn;
 [a-zA-Z][a-zA-Z0-9_]*    {strcpy(yylval.str, yytext);return Tid;}
 [ \t]+                  ;
 [ \n]+                  ;
+$[a-zA-Z0-9_ ]*[ \n]   ;
 %%

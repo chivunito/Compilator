@@ -1,8 +1,14 @@
+int addition(int a, int b){
+	return a+b;
+}
+
 int main(){
-	int a=10,b=20;
-	while (a) {
+	int a=10,b=100;
+	while(a){
+		if(a){
+			b=addition(a,b);
+		}
 		a=a-1;
-		b=b+1;
-	} 
-	return 10;
+	}
+	return 2;
 }
