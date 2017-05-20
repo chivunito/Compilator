@@ -87,7 +87,7 @@ int execute(){
 	}
 	else if(OP==JMPC){ //STORE
 		if(registers[B]==0){
-			PC=registers[A];
+			PC=A;
 		}
 		else{
 			PC++;
