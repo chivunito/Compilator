@@ -27,7 +27,7 @@
 #define Tnumber 283
 #define Tid 284
 #define Tprint 285
-#define Body 286
+#define Bodyboucle 286
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1

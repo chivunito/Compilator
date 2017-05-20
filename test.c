@@ -1,8 +1,7 @@
-int salo(int a){
-	return 200+a;
-}
 int main(){
-	int a = 55;
-	a = 10+salo(a);
+	int a=5;
+	while (1) {
+		a=a+1;
+	} 
 	return 10;
 }

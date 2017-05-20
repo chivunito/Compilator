@@ -86,9 +86,11 @@ BodyMain : TAo Decls Instrs Return TAf
 			}
 	
 BodyFct : TAo{increase_depth();} Decls Instrs Return TAf{decrease_depth();} 
+
+BodyBoucle : TAo{increase_depth();} Decls Instrs TAf{decrease_depth();} 
 			
 
-Return : Treturn E{instruction(LOAD,r5,$2,0); printf("ICIIIIIIIIIIII");} Tpv ;
+Return : Treturn E{instruction(LOAD,r5,$2,0);} Tpv ;
 
 Instrs : 
 	| Instr Instrs ;
@@ -97,7 +99,7 @@ If :  Tif TPo E TPf
 			{
 				printf("> IF : \n" ); $1=jump_if($3); pull_symbol(); increase_depth();
 			} 
-		Body 
+				BodyBoucle 
 			{
 				maj_if_jmpc($1);
 			}; 
@@ -112,7 +114,7 @@ While : Twhile
 					pull_symbol();
 					increase_depth();
 				}
-			Body
+					BodyBoucle
 				{
 					maj_while_jmpc($3,$1);
 				}; 
@@ -222,5 +224,5 @@ Params :
 	| E ParamNext;
 ParamNext : 
 	| Tvir E ParamNext;
-For : Tfor TPo Decl1 Tpv E Tpv Instr TPf Body;
+For : Tfor TPo Decl1 Tpv E Tpv Instr TPf Bodyboucle;
 %%

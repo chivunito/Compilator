@@ -68,7 +68,8 @@ int maj_if_jmpc(int instruction2modify){
 }
 
 int maj_while_jmpc(int instruction2modify,int instructionJump){
-	instruction(JMP,instructionJump,0,0);
+	instruction(AFC,r0,instructionJump,0);
+	instruction(JMP,r0,0,0);
 	maj_if_jmpc(instruction2modify);
 }
 
