@@ -88,7 +88,7 @@ BodyMain : TAo Decls Instrs Return TAf
 BodyFct : TAo{increase_depth();} Decls Instrs Return TAf{decrease_depth();} 
 			
 
-Return : Treturn E Tpv ;
+Return : Treturn E{instruction(LOAD,r5,$2,0); printf("ICIIIIIIIIIIII");} Tpv ;
 
 Instrs : 
 	| Instr Instrs ;
@@ -214,7 +214,10 @@ E : Tnumber
 	| E Tand E
 	| E Tor E
 	| TPo E TPf
-	| Invoc;
+	| Invoc{
+		$$=add_var_temp(1);
+		instruction(STORE,$$,r5,-1);
+	};
 Params : 
 	| E ParamNext;
 ParamNext : 

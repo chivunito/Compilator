@@ -3,6 +3,7 @@
 #define r0 0
 #define r1 1
 #define r2 2
+#define r5 5
 #define r15 15
 #define ADD 1
 #define MUL 2

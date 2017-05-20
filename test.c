@@ -1,9 +1,8 @@
 int salo(int a){
-	int b = a	;
-	return 200;
+	return 200+a;
 }
 int main(){
-	int a = 500;
-	salo(a);
-	return 0;
+	int a = 55;
+	a = 10+salo(a);
+	return 10;
 }
