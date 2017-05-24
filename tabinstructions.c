@@ -18,6 +18,7 @@ int get_sommet_instr(){
 
 int set_PC(){
 	PC=get_sommet_instr();
+	instructions[0][2]=PC;
 }
 
 int instruction(int instruction, int A,int B, int C) {
@@ -37,12 +38,12 @@ int jump_if(int E) {
 
 void jump_fin_fct(int adress_ret){
 	instruction(LOAD,r1,adress_ret,-1);
-	instruction(JMP,r1,-1,-1);
+	instruction(JMPR,r1,-1,-1);
 }
 
 void jump_fin_main(int adress_ret){
-	instruction(AFC,r0,-3000,-1);
-	instruction(JMP,r0,-1,-1);
+	instruction(AFC,r0,65535,-1);
+	instruction(JMPR,r0,-1,-1);
 }
 
 
@@ -54,7 +55,7 @@ void function_call( char *name,int ebp){  // ebp, nombre de parametre de la fonc
 	instruction(AFC,r1,ebp,-100);
 	instruction(ADD,r15,r15,r1);
 	instruction(AFC,r2,adr_function,-1);
-	instruction(JMP,r2,-1,-1);
+	instruction(JMPR,r2,-1,-1);
 	int ret_addr =instruction(AFC,r2,ebp,-1);
 	instruction(SOU,r15,r15,r2);
 	instructions[instr2modify][2] = ret_addr;
@@ -68,7 +69,7 @@ int maj_if_jmpc(int instruction2modify){
 
 int maj_while_jmpc(int instruction2modify,int instructionJump){
 	instruction(AFC,r0,instructionJump,0);
-	instruction(JMP,r0,0,0);
+	instruction(JMPR,r0,0,0);
 	maj_if_jmpc(instruction2modify);
 }
 
@@ -150,6 +151,7 @@ void print_table_instruction(){
 		print_instruction(instructions[i]);
 	}
 	print_file();
+	print_file_hexa();
 }
 
 int print_file(){
@@ -163,6 +165,56 @@ int print_file(){
 	for (i=0;i<sommettab;i++) {
 		fprintf(file,"%d :",i);
 		print_file_instruction(file,instructions[i]);
+	}
+	
+	if ((fclose(file)!=0)){
+		printf("erreur à la fermeture du file");
+	}
+	return 0;
+}
+
+
+void print_inst_hexa(FILE * file,int tab[4]){
+
+	fprintf(file,"%02x",tab[0]);
+	switch(tab[0]){
+		case ADD : 
+			fprintf(file,"%02x%02x%02x\n",tab[1],tab[2],tab[3]);
+		break;
+		case SOU : 
+			fprintf(file,"%02x%02x%02x\n",tab[1],tab[2],tab[3]);
+		break;
+		case AFC : 
+			fprintf(file,"%02x%02x%02x\n",tab[1],(tab[2]/256), (tab[2]%256) );
+		break;
+		case LOAD : 
+			fprintf(file,"%02x%02x%02x\n",tab[1],(tab[2]/256), (tab[2]%256) );
+		break;		
+		case STORE :
+			fprintf(file,"%02x%02x%02x\n",(tab[1]/256), (tab[1]%256), tab[2] );
+		break;
+		case JMPR :
+			fprintf(file,"%02x%02x%02x\n",0 , 0, tab[1] );
+		break;
+		case JMPC :
+			fprintf(file,"%02x%02x%02x\n", 0,  tab[2],  tab[1] );
+		break;
+		default: 
+			fprintf(file,"UNKNOWN \n");
+		break;
+	}
+
+ 	}
+
+int print_file_hexa(){
+	FILE * file;
+	if ((file = fopen("test.hex","w+"))==0) {
+		printf("erreur à l'ouverture du file des hexas");
+	}
+
+	int i=0;
+	for (i=0;i<sommettab;i++) {
+		print_inst_hexa(file,instructions[i]);
 	}
 	
 	if ((fclose(file)!=0)){

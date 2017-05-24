@@ -10,7 +10,7 @@ int PC=0;
 
 int run () {
 	char carlu;
-	while(PC!=-3000){
+	while(PC!=65535){
 		scanf("%c",&carlu);
 		switch(carlu){
 			case 'n' : 
@@ -23,7 +23,7 @@ int run () {
 			print_memory();
 			break;
 			case 'f' :
-			while(PC!=-3000){ 
+			while(PC!=65535){ 
 			execute();
 			}
 			break;
@@ -82,7 +82,7 @@ int execute(){
 		memory[A+registers[15]]=registers[B];
 		PC++;
 	}
-	else if(OP==JMP){ //STORE
+	else if(OP==JMPR){ //STORE
 		PC = registers[A];
 	}
 	else if(OP==JMPC){ //STORE

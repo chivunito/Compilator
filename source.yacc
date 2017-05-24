@@ -49,7 +49,7 @@ int main()
 %%
 
 Prg : 
-	| Fct Prg ;
+	| {instruction(AFC,r0,255,0);instruction(JMPR,r0,0,0);} Fct Prg ;
 	
 Fct :  Tint Tmain{set_PC();} TPo Args TPf BodyMain   /*setPC permet d'initialiser le pointeur d'instruction au bon endroit*/
 	| Tint Tid 

@@ -1,1207 +1,1195 @@
    0  $accept : Prg $end
 
    1  Prg :
-   2      | Fct Prg
 
-   3  $$1 :
+   2  $$1 :
 
-   4  Fct : Tint Tmain $$1 TPo Args TPf BodyMain
+   3  Prg : $$1 Fct Prg
 
-   5  $$2 :
+   4  $$2 :
+
+   5  Fct : Tint Tmain $$2 TPo Args TPf BodyMain
 
    6  $$3 :
 
-   7  Fct : Tint Tid $$2 TPo Args $$3 TPf BodyFct
+   7  $$4 :
 
-   8  Args :
-   9       | Arg ListeArgs
+   8  Fct : Tint Tid $$3 TPo Args $$4 TPf BodyFct
 
-  10  Arg : Tint Tid
+   9  Args :
+  10       | Arg ListeArgs
 
-  11  ListeArgs :
-  12            | Tvir Arg ListeArgs
+  11  Arg : Tint Tid
 
-  13  BodyMain : TAo Decls Instrs Return TAf
+  12  ListeArgs :
+  13            | Tvir Arg ListeArgs
 
-  14  $$4 :
+  14  BodyMain : TAo Decls Instrs Return TAf
 
-  15  BodyFct : TAo $$4 Decls Instrs Return TAf
+  15  $$5 :
 
-  16  $$5 :
+  16  BodyFct : TAo $$5 Decls Instrs Return TAf
 
-  17  BodyBoucle : TAo $$5 Decls Instrs TAf
+  17  $$6 :
 
-  18  $$6 :
+  18  BodyBoucle : TAo $$6 Decls Instrs TAf
 
-  19  Return : Treturn E $$6 Tpv
+  19  $$7 :
 
-  20  Instrs :
-  21         | Instr Instrs
+  20  Return : Treturn E $$7 Tpv
 
-  22  $$7 :
+  21  Instrs :
+  22         | Instr Instrs
 
-  23  If : Tif TPo E TPf $$7 BodyBoucle
+  23  $$8 :
 
-  24  $$8 :
+  24  If : Tif TPo E TPf $$8 BodyBoucle
 
   25  $$9 :
 
-  26  While : Twhile $$8 TPo E TPf $$9 BodyBoucle
+  26  $$10 :
 
-  27  Invoc : Tprint TPo E TPf
+  27  While : Twhile $$9 TPo E TPf $$10 BodyBoucle
 
-  28  $$10 :
+  28  Invoc : Tprint TPo E TPf
 
-  29  Invoc : Tid TPo $$10 Params TPf
+  29  $$11 :
 
-  30  Aff : Tid Tegal E
+  30  Invoc : Tid TPo $$11 Params TPf
 
-  31  Decl1 : Tid
+  31  Aff : Tid Tegal E
 
-  32  $$11 :
+  32  Decl1 : Tid
 
-  33  Decl1 : Tid $$11 Tegal E
+  33  $$12 :
 
-  34  Decls :
-  35        | Tconst DeclList Tpv
-  36        | Tint DeclList Tpv
+  34  Decl1 : Tid $$12 Tegal E
 
-  37  DeclList : Decl1
-  38           | Decl1 Tvir DeclList
+  35  Decls :
+  36        | Tconst DeclList Tpv
+  37        | Tint DeclList Tpv
 
-  39  Instr : If
-  40        | While
-  41        | For
-  42        | Invoc Tpv
-  43        | Aff Tpv
+  38  DeclList : Decl1
+  39           | Decl1 Tvir DeclList
 
-  44  E : Tnumber
-  45    | Tid
-  46    | E Tplus E
-  47    | E Tless E
-  48    | E Tfois E
-  49    | E Tdiv E
-  50    | E Tcmp E
-  51    | E Tinf E
-  52    | E Tsup E
-  53    | E Tand E
-  54    | E Tor E
-  55    | TPo E TPf
-  56    | Invoc
+  40  Instr : If
+  41        | While
+  42        | For
+  43        | Invoc Tpv
+  44        | Aff Tpv
 
-  57  Params :
-  58         | E ParamNext
+  45  E : Tnumber
+  46    | Tid
+  47    | E Tplus E
+  48    | E Tless E
+  49    | E Tfois E
+  50    | E Tdiv E
+  51    | E Tcmp E
+  52    | E Tinf E
+  53    | E Tsup E
+  54    | E Tand E
+  55    | E Tor E
+  56    | TPo E TPf
+  57    | Invoc
 
-  59  ParamNext :
-  60            | Tvir E ParamNext
+  58  Params :
+  59         | E ParamNext
 
-  61  For : Tfor TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle
+  60  ParamNext :
+  61            | Tvir E ParamNext
+
+  62  For : Tfor TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle
 
 state 0
 	$accept : . Prg $end  (0)
 	Prg : .  (1)
+	$$1 : .  (2)
 
-	Tint  shift 1
 	$end  reduce 1
+	Tint  reduce 2
 
-	Prg  goto 2
-	Fct  goto 3
+	Prg  goto 1
+	$$1  goto 2
 
 
 state 1
-	Fct : Tint . Tmain $$1 TPo Args TPf BodyMain  (4)
-	Fct : Tint . Tid $$2 TPo Args $$3 TPf BodyFct  (7)
-
-	Tmain  shift 4
-	Tid  shift 5
-	.  error
-
-
-state 2
 	$accept : Prg . $end  (0)
 
 	$end  accept
 
 
+state 2
+	Prg : $$1 . Fct Prg  (3)
+
+	Tint  shift 3
+	.  error
+
+	Fct  goto 4
+
+
 state 3
-	Prg : Fct . Prg  (2)
-	Prg : .  (1)
+	Fct : Tint . Tmain $$2 TPo Args TPf BodyMain  (5)
+	Fct : Tint . Tid $$3 TPo Args $$4 TPf BodyFct  (8)
 
-	Tint  shift 1
-	$end  reduce 1
-
-	Prg  goto 6
-	Fct  goto 3
+	Tmain  shift 5
+	Tid  shift 6
+	.  error
 
 
 state 4
-	Fct : Tint Tmain . $$1 TPo Args TPf BodyMain  (4)
-	$$1 : .  (3)
+	Prg : $$1 Fct . Prg  (3)
+	Prg : .  (1)
+	$$1 : .  (2)
 
-	.  reduce 3
+	$end  reduce 1
+	Tint  reduce 2
 
-	$$1  goto 7
+	Prg  goto 7
+	$$1  goto 2
 
 
 state 5
-	Fct : Tint Tid . $$2 TPo Args $$3 TPf BodyFct  (7)
-	$$2 : .  (5)
+	Fct : Tint Tmain . $$2 TPo Args TPf BodyMain  (5)
+	$$2 : .  (4)
 
-	.  reduce 5
+	.  reduce 4
 
 	$$2  goto 8
 
 
 state 6
-	Prg : Fct Prg .  (2)
+	Fct : Tint Tid . $$3 TPo Args $$4 TPf BodyFct  (8)
+	$$3 : .  (6)
 
-	.  reduce 2
+	.  reduce 6
+
+	$$3  goto 9
 
 
 state 7
-	Fct : Tint Tmain $$1 . TPo Args TPf BodyMain  (4)
+	Prg : $$1 Fct Prg .  (3)
 
-	TPo  shift 9
-	.  error
+	.  reduce 3
 
 
 state 8
-	Fct : Tint Tid $$2 . TPo Args $$3 TPf BodyFct  (7)
+	Fct : Tint Tmain $$2 . TPo Args TPf BodyMain  (5)
 
 	TPo  shift 10
 	.  error
 
 
 state 9
-	Fct : Tint Tmain $$1 TPo . Args TPf BodyMain  (4)
-	Args : .  (8)
+	Fct : Tint Tid $$3 . TPo Args $$4 TPf BodyFct  (8)
 
-	Tint  shift 11
-	TPf  reduce 8
-
-	Args  goto 12
-	Arg  goto 13
-
-
-state 10
-	Fct : Tint Tid $$2 TPo . Args $$3 TPf BodyFct  (7)
-	Args : .  (8)
-
-	Tint  shift 11
-	TPf  reduce 8
-
-	Args  goto 14
-	Arg  goto 13
-
-
-state 11
-	Arg : Tint . Tid  (10)
-
-	Tid  shift 15
+	TPo  shift 11
 	.  error
 
 
-state 12
-	Fct : Tint Tmain $$1 TPo Args . TPf BodyMain  (4)
+state 10
+	Fct : Tint Tmain $$2 TPo . Args TPf BodyMain  (5)
+	Args : .  (9)
 
-	TPf  shift 16
+	Tint  shift 12
+	TPf  reduce 9
+
+	Args  goto 13
+	Arg  goto 14
+
+
+state 11
+	Fct : Tint Tid $$3 TPo . Args $$4 TPf BodyFct  (8)
+	Args : .  (9)
+
+	Tint  shift 12
+	TPf  reduce 9
+
+	Args  goto 15
+	Arg  goto 14
+
+
+state 12
+	Arg : Tint . Tid  (11)
+
+	Tid  shift 16
 	.  error
 
 
 state 13
-	Args : Arg . ListeArgs  (9)
-	ListeArgs : .  (11)
+	Fct : Tint Tmain $$2 TPo Args . TPf BodyMain  (5)
 
-	Tvir  shift 17
-	TPf  reduce 11
-
-	ListeArgs  goto 18
+	TPf  shift 17
+	.  error
 
 
 state 14
-	Fct : Tint Tid $$2 TPo Args . $$3 TPf BodyFct  (7)
-	$$3 : .  (6)
+	Args : Arg . ListeArgs  (10)
+	ListeArgs : .  (12)
 
-	.  reduce 6
+	Tvir  shift 18
+	TPf  reduce 12
 
-	$$3  goto 19
+	ListeArgs  goto 19
 
 
 state 15
-	Arg : Tint Tid .  (10)
+	Fct : Tint Tid $$3 TPo Args . $$4 TPf BodyFct  (8)
+	$$4 : .  (7)
+
+	.  reduce 7
+
+	$$4  goto 20
+
+
+state 16
+	Arg : Tint Tid .  (11)
+
+	.  reduce 11
+
+
+state 17
+	Fct : Tint Tmain $$2 TPo Args TPf . BodyMain  (5)
+
+	TAo  shift 21
+	.  error
+
+	BodyMain  goto 22
+
+
+state 18
+	ListeArgs : Tvir . Arg ListeArgs  (13)
+
+	Tint  shift 12
+	.  error
+
+	Arg  goto 23
+
+
+state 19
+	Args : Arg ListeArgs .  (10)
 
 	.  reduce 10
 
 
-state 16
-	Fct : Tint Tmain $$1 TPo Args TPf . BodyMain  (4)
-
-	TAo  shift 20
-	.  error
-
-	BodyMain  goto 21
-
-
-state 17
-	ListeArgs : Tvir . Arg ListeArgs  (12)
-
-	Tint  shift 11
-	.  error
-
-	Arg  goto 22
-
-
-state 18
-	Args : Arg ListeArgs .  (9)
-
-	.  reduce 9
-
-
-state 19
-	Fct : Tint Tid $$2 TPo Args $$3 . TPf BodyFct  (7)
-
-	TPf  shift 23
-	.  error
-
-
 state 20
-	BodyMain : TAo . Decls Instrs Return TAf  (13)
-	Decls : .  (34)
+	Fct : Tint Tid $$3 TPo Args $$4 . TPf BodyFct  (8)
 
-	Tint  shift 24
-	Tconst  shift 25
-	Tif  reduce 34
-	Tfor  reduce 34
-	Twhile  reduce 34
-	Treturn  reduce 34
-	Tid  reduce 34
-	Tprint  reduce 34
-
-	Decls  goto 26
+	TPf  shift 24
+	.  error
 
 
 state 21
-	Fct : Tint Tmain $$1 TPo Args TPf BodyMain .  (4)
+	BodyMain : TAo . Decls Instrs Return TAf  (14)
+	Decls : .  (35)
 
-	.  reduce 4
+	Tint  shift 25
+	Tconst  shift 26
+	Tif  reduce 35
+	Tfor  reduce 35
+	Twhile  reduce 35
+	Treturn  reduce 35
+	Tid  reduce 35
+	Tprint  reduce 35
+
+	Decls  goto 27
 
 
 state 22
-	ListeArgs : Tvir Arg . ListeArgs  (12)
-	ListeArgs : .  (11)
+	Fct : Tint Tmain $$2 TPo Args TPf BodyMain .  (5)
 
-	Tvir  shift 17
-	TPf  reduce 11
-
-	ListeArgs  goto 27
+	.  reduce 5
 
 
 state 23
-	Fct : Tint Tid $$2 TPo Args $$3 TPf . BodyFct  (7)
+	ListeArgs : Tvir Arg . ListeArgs  (13)
+	ListeArgs : .  (12)
 
-	TAo  shift 28
-	.  error
+	Tvir  shift 18
+	TPf  reduce 12
 
-	BodyFct  goto 29
+	ListeArgs  goto 28
 
 
 state 24
-	Decls : Tint . DeclList Tpv  (36)
+	Fct : Tint Tid $$3 TPo Args $$4 TPf . BodyFct  (8)
 
-	Tid  shift 30
+	TAo  shift 29
 	.  error
 
-	Decl1  goto 31
-	DeclList  goto 32
+	BodyFct  goto 30
 
 
 state 25
-	Decls : Tconst . DeclList Tpv  (35)
+	Decls : Tint . DeclList Tpv  (37)
 
-	Tid  shift 30
+	Tid  shift 31
 	.  error
 
-	Decl1  goto 31
+	Decl1  goto 32
 	DeclList  goto 33
 
 
 state 26
-	BodyMain : TAo Decls . Instrs Return TAf  (13)
-	Instrs : .  (20)
+	Decls : Tconst . DeclList Tpv  (36)
 
-	Tif  shift 34
-	Tfor  shift 35
-	Twhile  shift 36
-	Tid  shift 37
-	Tprint  shift 38
-	Treturn  reduce 20
+	Tid  shift 31
+	.  error
 
-	Instrs  goto 39
-	Instr  goto 40
-	If  goto 41
-	While  goto 42
-	Invoc  goto 43
-	Aff  goto 44
-	For  goto 45
+	Decl1  goto 32
+	DeclList  goto 34
 
 
 state 27
-	ListeArgs : Tvir Arg ListeArgs .  (12)
+	BodyMain : TAo Decls . Instrs Return TAf  (14)
+	Instrs : .  (21)
 
-	.  reduce 12
+	Tif  shift 35
+	Tfor  shift 36
+	Twhile  shift 37
+	Tid  shift 38
+	Tprint  shift 39
+	Treturn  reduce 21
+
+	Instrs  goto 40
+	Instr  goto 41
+	If  goto 42
+	While  goto 43
+	Invoc  goto 44
+	Aff  goto 45
+	For  goto 46
 
 
 state 28
-	BodyFct : TAo . $$4 Decls Instrs Return TAf  (15)
-	$$4 : .  (14)
+	ListeArgs : Tvir Arg ListeArgs .  (13)
 
-	.  reduce 14
-
-	$$4  goto 46
+	.  reduce 13
 
 
 state 29
-	Fct : Tint Tid $$2 TPo Args $$3 TPf BodyFct .  (7)
+	BodyFct : TAo . $$5 Decls Instrs Return TAf  (16)
+	$$5 : .  (15)
 
-	.  reduce 7
+	.  reduce 15
+
+	$$5  goto 47
 
 
 state 30
-	Decl1 : Tid .  (31)
-	Decl1 : Tid . $$11 Tegal E  (33)
-	$$11 : .  (32)
+	Fct : Tint Tid $$3 TPo Args $$4 TPf BodyFct .  (8)
 
-	Tpv  reduce 31
-	Tegal  reduce 32
-	Tvir  reduce 31
-
-	$$11  goto 47
+	.  reduce 8
 
 
 state 31
-	DeclList : Decl1 .  (37)
-	DeclList : Decl1 . Tvir DeclList  (38)
+	Decl1 : Tid .  (32)
+	Decl1 : Tid . $$12 Tegal E  (34)
+	$$12 : .  (33)
 
-	Tvir  shift 48
-	Tpv  reduce 37
+	Tpv  reduce 32
+	Tegal  reduce 33
+	Tvir  reduce 32
+
+	$$12  goto 48
 
 
 state 32
-	Decls : Tint DeclList . Tpv  (36)
+	DeclList : Decl1 .  (38)
+	DeclList : Decl1 . Tvir DeclList  (39)
 
-	Tpv  shift 49
-	.  error
+	Tvir  shift 49
+	Tpv  reduce 38
 
 
 state 33
-	Decls : Tconst DeclList . Tpv  (35)
+	Decls : Tint DeclList . Tpv  (37)
 
 	Tpv  shift 50
 	.  error
 
 
 state 34
-	If : Tif . TPo E TPf $$7 BodyBoucle  (23)
+	Decls : Tconst DeclList . Tpv  (36)
 
-	TPo  shift 51
+	Tpv  shift 51
 	.  error
 
 
 state 35
-	For : Tfor . TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle  (61)
+	If : Tif . TPo E TPf $$8 BodyBoucle  (24)
 
 	TPo  shift 52
 	.  error
 
 
 state 36
-	While : Twhile . $$8 TPo E TPf $$9 BodyBoucle  (26)
-	$$8 : .  (24)
+	For : Tfor . TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle  (62)
 
-	.  reduce 24
-
-	$$8  goto 53
-
-
-state 37
-	Invoc : Tid . TPo $$10 Params TPf  (29)
-	Aff : Tid . Tegal E  (30)
-
-	TPo  shift 54
-	Tegal  shift 55
+	TPo  shift 53
 	.  error
 
 
-state 38
-	Invoc : Tprint . TPo E TPf  (27)
+state 37
+	While : Twhile . $$9 TPo E TPf $$10 BodyBoucle  (27)
+	$$9 : .  (25)
 
-	TPo  shift 56
+	.  reduce 25
+
+	$$9  goto 54
+
+
+state 38
+	Invoc : Tid . TPo $$11 Params TPf  (30)
+	Aff : Tid . Tegal E  (31)
+
+	TPo  shift 55
+	Tegal  shift 56
 	.  error
 
 
 state 39
-	BodyMain : TAo Decls Instrs . Return TAf  (13)
+	Invoc : Tprint . TPo E TPf  (28)
 
-	Treturn  shift 57
+	TPo  shift 57
 	.  error
-
-	Return  goto 58
 
 
 state 40
-	Instrs : Instr . Instrs  (21)
-	Instrs : .  (20)
+	BodyMain : TAo Decls Instrs . Return TAf  (14)
 
-	Tif  shift 34
-	Tfor  shift 35
-	Twhile  shift 36
-	Tid  shift 37
-	Tprint  shift 38
-	TAf  reduce 20
-	Treturn  reduce 20
+	Treturn  shift 58
+	.  error
 
-	Instrs  goto 59
-	Instr  goto 40
-	If  goto 41
-	While  goto 42
-	Invoc  goto 43
-	Aff  goto 44
-	For  goto 45
+	Return  goto 59
 
 
 state 41
-	Instr : If .  (39)
+	Instrs : Instr . Instrs  (22)
+	Instrs : .  (21)
 
-	.  reduce 39
+	Tif  shift 35
+	Tfor  shift 36
+	Twhile  shift 37
+	Tid  shift 38
+	Tprint  shift 39
+	TAf  reduce 21
+	Treturn  reduce 21
+
+	Instrs  goto 60
+	Instr  goto 41
+	If  goto 42
+	While  goto 43
+	Invoc  goto 44
+	Aff  goto 45
+	For  goto 46
 
 
 state 42
-	Instr : While .  (40)
+	Instr : If .  (40)
 
 	.  reduce 40
 
 
 state 43
-	Instr : Invoc . Tpv  (42)
+	Instr : While .  (41)
 
-	Tpv  shift 60
-	.  error
+	.  reduce 41
 
 
 state 44
-	Instr : Aff . Tpv  (43)
+	Instr : Invoc . Tpv  (43)
 
 	Tpv  shift 61
 	.  error
 
 
 state 45
-	Instr : For .  (41)
+	Instr : Aff . Tpv  (44)
 
-	.  reduce 41
+	Tpv  shift 62
+	.  error
 
 
 state 46
-	BodyFct : TAo $$4 . Decls Instrs Return TAf  (15)
-	Decls : .  (34)
-
-	Tint  shift 24
-	Tconst  shift 25
-	Tif  reduce 34
-	Tfor  reduce 34
-	Twhile  reduce 34
-	Treturn  reduce 34
-	Tid  reduce 34
-	Tprint  reduce 34
-
-	Decls  goto 62
-
-
-state 47
-	Decl1 : Tid $$11 . Tegal E  (33)
-
-	Tegal  shift 63
-	.  error
-
-
-state 48
-	DeclList : Decl1 Tvir . DeclList  (38)
-
-	Tid  shift 30
-	.  error
-
-	Decl1  goto 31
-	DeclList  goto 64
-
-
-state 49
-	Decls : Tint DeclList Tpv .  (36)
-
-	.  reduce 36
-
-
-state 50
-	Decls : Tconst DeclList Tpv .  (35)
-
-	.  reduce 35
-
-
-state 51
-	If : Tif TPo . E TPf $$7 BodyBoucle  (23)
-
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
-
-	E  goto 68
-	Invoc  goto 69
-
-
-state 52
-	For : Tfor TPo . Decl1 Tpv E Tpv Instr TPf BodyBoucle  (61)
-
-	Tid  shift 30
-	.  error
-
-	Decl1  goto 70
-
-
-state 53
-	While : Twhile $$8 . TPo E TPf $$9 BodyBoucle  (26)
-
-	TPo  shift 71
-	.  error
-
-
-state 54
-	Invoc : Tid TPo . $$10 Params TPf  (29)
-	$$10 : .  (28)
-
-	.  reduce 28
-
-	$$10  goto 72
-
-
-state 55
-	Aff : Tid Tegal . E  (30)
-
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
-
-	E  goto 73
-	Invoc  goto 69
-
-
-state 56
-	Invoc : Tprint TPo . E TPf  (27)
-
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
-
-	E  goto 74
-	Invoc  goto 69
-
-
-state 57
-	Return : Treturn . E $$6 Tpv  (19)
-
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
-
-	E  goto 75
-	Invoc  goto 69
-
-
-state 58
-	BodyMain : TAo Decls Instrs Return . TAf  (13)
-
-	TAf  shift 76
-	.  error
-
-
-state 59
-	Instrs : Instr Instrs .  (21)
-
-	.  reduce 21
-
-
-state 60
-	Instr : Invoc Tpv .  (42)
+	Instr : For .  (42)
 
 	.  reduce 42
 
 
+state 47
+	BodyFct : TAo $$5 . Decls Instrs Return TAf  (16)
+	Decls : .  (35)
+
+	Tint  shift 25
+	Tconst  shift 26
+	Tif  reduce 35
+	Tfor  reduce 35
+	Twhile  reduce 35
+	Treturn  reduce 35
+	Tid  reduce 35
+	Tprint  reduce 35
+
+	Decls  goto 63
+
+
+state 48
+	Decl1 : Tid $$12 . Tegal E  (34)
+
+	Tegal  shift 64
+	.  error
+
+
+state 49
+	DeclList : Decl1 Tvir . DeclList  (39)
+
+	Tid  shift 31
+	.  error
+
+	Decl1  goto 32
+	DeclList  goto 65
+
+
+state 50
+	Decls : Tint DeclList Tpv .  (37)
+
+	.  reduce 37
+
+
+state 51
+	Decls : Tconst DeclList Tpv .  (36)
+
+	.  reduce 36
+
+
+state 52
+	If : Tif TPo . E TPf $$8 BodyBoucle  (24)
+
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
+
+	E  goto 69
+	Invoc  goto 70
+
+
+state 53
+	For : Tfor TPo . Decl1 Tpv E Tpv Instr TPf BodyBoucle  (62)
+
+	Tid  shift 31
+	.  error
+
+	Decl1  goto 71
+
+
+state 54
+	While : Twhile $$9 . TPo E TPf $$10 BodyBoucle  (27)
+
+	TPo  shift 72
+	.  error
+
+
+state 55
+	Invoc : Tid TPo . $$11 Params TPf  (30)
+	$$11 : .  (29)
+
+	.  reduce 29
+
+	$$11  goto 73
+
+
+state 56
+	Aff : Tid Tegal . E  (31)
+
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
+
+	E  goto 74
+	Invoc  goto 70
+
+
+state 57
+	Invoc : Tprint TPo . E TPf  (28)
+
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
+
+	E  goto 75
+	Invoc  goto 70
+
+
+state 58
+	Return : Treturn . E $$7 Tpv  (20)
+
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
+
+	E  goto 76
+	Invoc  goto 70
+
+
+state 59
+	BodyMain : TAo Decls Instrs Return . TAf  (14)
+
+	TAf  shift 77
+	.  error
+
+
+state 60
+	Instrs : Instr Instrs .  (22)
+
+	.  reduce 22
+
+
 state 61
-	Instr : Aff Tpv .  (43)
+	Instr : Invoc Tpv .  (43)
 
 	.  reduce 43
 
 
 state 62
-	BodyFct : TAo $$4 Decls . Instrs Return TAf  (15)
-	Instrs : .  (20)
-
-	Tif  shift 34
-	Tfor  shift 35
-	Twhile  shift 36
-	Tid  shift 37
-	Tprint  shift 38
-	Treturn  reduce 20
-
-	Instrs  goto 77
-	Instr  goto 40
-	If  goto 41
-	While  goto 42
-	Invoc  goto 43
-	Aff  goto 44
-	For  goto 45
-
-
-state 63
-	Decl1 : Tid $$11 Tegal . E  (33)
-
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
-
-	E  goto 78
-	Invoc  goto 69
-
-
-state 64
-	DeclList : Decl1 Tvir DeclList .  (38)
-
-	.  reduce 38
-
-
-state 65
-	E : TPo . E TPf  (55)
-
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
-
-	E  goto 79
-	Invoc  goto 69
-
-
-state 66
-	E : Tnumber .  (44)
+	Instr : Aff Tpv .  (44)
 
 	.  reduce 44
 
 
-state 67
-	Invoc : Tid . TPo $$10 Params TPf  (29)
-	E : Tid .  (45)
+state 63
+	BodyFct : TAo $$5 Decls . Instrs Return TAf  (16)
+	Instrs : .  (21)
 
-	TPo  shift 54
-	Tcmp  reduce 45
-	Tinf  reduce 45
-	Tsup  reduce 45
-	TPf  reduce 45
-	Tpv  reduce 45
-	Tvir  reduce 45
-	Tplus  reduce 45
-	Tless  reduce 45
-	Tdiv  reduce 45
-	Tfois  reduce 45
-	Tand  reduce 45
-	Tor  reduce 45
+	Tif  shift 35
+	Tfor  shift 36
+	Twhile  shift 37
+	Tid  shift 38
+	Tprint  shift 39
+	Treturn  reduce 21
+
+	Instrs  goto 78
+	Instr  goto 41
+	If  goto 42
+	While  goto 43
+	Invoc  goto 44
+	Aff  goto 45
+	For  goto 46
+
+
+state 64
+	Decl1 : Tid $$12 Tegal . E  (34)
+
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
+
+	E  goto 79
+	Invoc  goto 70
+
+
+state 65
+	DeclList : Decl1 Tvir DeclList .  (39)
+
+	.  reduce 39
+
+
+state 66
+	E : TPo . E TPf  (56)
+
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
+
+	E  goto 80
+	Invoc  goto 70
+
+
+state 67
+	E : Tnumber .  (45)
+
+	.  reduce 45
 
 
 state 68
-	If : Tif TPo E . TPf $$7 BodyBoucle  (23)
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	Invoc : Tid . TPo $$11 Params TPf  (30)
+	E : Tid .  (46)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	TPf  shift 83
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	.  error
+	TPo  shift 55
+	Tcmp  reduce 46
+	Tinf  reduce 46
+	Tsup  reduce 46
+	TPf  reduce 46
+	Tpv  reduce 46
+	Tvir  reduce 46
+	Tplus  reduce 46
+	Tless  reduce 46
+	Tdiv  reduce 46
+	Tfois  reduce 46
+	Tand  reduce 46
+	Tor  reduce 46
 
 
 state 69
-	E : Invoc .  (56)
+	If : Tif TPo E . TPf $$8 BodyBoucle  (24)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	.  reduce 56
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	TPf  shift 84
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	.  error
 
 
 state 70
-	For : Tfor TPo Decl1 . Tpv E Tpv Instr TPf BodyBoucle  (61)
+	E : Invoc .  (57)
 
-	Tpv  shift 90
-	.  error
+	.  reduce 57
 
 
 state 71
-	While : Twhile $$8 TPo . E TPf $$9 BodyBoucle  (26)
+	For : Tfor TPo Decl1 . Tpv E Tpv Instr TPf BodyBoucle  (62)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	Tpv  shift 91
 	.  error
-
-	E  goto 91
-	Invoc  goto 69
 
 
 state 72
-	Invoc : Tid TPo $$10 . Params TPf  (29)
-	Params : .  (57)
+	While : Twhile $$9 TPo . E TPf $$10 BodyBoucle  (27)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	TPf  reduce 57
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
 
 	E  goto 92
-	Invoc  goto 69
-	Params  goto 93
+	Invoc  goto 70
 
 
 state 73
-	Aff : Tid Tegal E .  (30)
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	Invoc : Tid TPo $$11 . Params TPf  (30)
+	Params : .  (58)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	Tpv  reduce 30
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	TPf  reduce 58
+
+	E  goto 93
+	Invoc  goto 70
+	Params  goto 94
 
 
 state 74
-	Invoc : Tprint TPo E . TPf  (27)
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	Aff : Tid Tegal E .  (31)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	TPf  shift 94
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	.  error
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	Tpv  reduce 31
 
 
 state 75
-	Return : Treturn E . $$6 Tpv  (19)
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
-	$$6 : .  (18)
+	Invoc : Tprint TPo E . TPf  (28)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	Tpv  reduce 18
-
-	$$6  goto 95
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	TPf  shift 95
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	.  error
 
 
 state 76
-	BodyMain : TAo Decls Instrs Return TAf .  (13)
+	Return : Treturn E . $$7 Tpv  (20)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+	$$7 : .  (19)
 
-	.  reduce 13
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	Tpv  reduce 19
+
+	$$7  goto 96
 
 
 state 77
-	BodyFct : TAo $$4 Decls Instrs . Return TAf  (15)
+	BodyMain : TAo Decls Instrs Return TAf .  (14)
 
-	Treturn  shift 57
-	.  error
-
-	Return  goto 96
+	.  reduce 14
 
 
 state 78
-	Decl1 : Tid $$11 Tegal E .  (33)
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	BodyFct : TAo $$5 Decls Instrs . Return TAf  (16)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	Tpv  reduce 33
-	Tvir  reduce 33
+	Treturn  shift 58
+	.  error
+
+	Return  goto 97
 
 
 state 79
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
-	E : TPo E . TPf  (55)
+	Decl1 : Tid $$12 Tegal E .  (34)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	TPf  shift 97
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	.  error
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	Tpv  reduce 34
+	Tvir  reduce 34
 
 
 state 80
-	E : E Tcmp . E  (50)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+	E : TPo E . TPf  (56)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	TPf  shift 98
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
 	.  error
-
-	E  goto 98
-	Invoc  goto 69
 
 
 state 81
-	E : E Tinf . E  (51)
+	E : E Tcmp . E  (51)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 99
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 82
-	E : E Tsup . E  (52)
+	E : E Tinf . E  (52)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 100
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 83
-	If : Tif TPo E TPf . $$7 BodyBoucle  (23)
-	$$7 : .  (22)
+	E : E Tsup . E  (53)
 
-	.  reduce 22
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
 
-	$$7  goto 101
+	E  goto 101
+	Invoc  goto 70
 
 
 state 84
-	E : E Tplus . E  (46)
+	If : Tif TPo E TPf . $$8 BodyBoucle  (24)
+	$$8 : .  (23)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
+	.  reduce 23
 
-	E  goto 102
-	Invoc  goto 69
+	$$8  goto 102
 
 
 state 85
-	E : E Tless . E  (47)
+	E : E Tplus . E  (47)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 103
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 86
-	E : E Tdiv . E  (49)
+	E : E Tless . E  (48)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 104
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 87
-	E : E Tfois . E  (48)
+	E : E Tdiv . E  (50)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 105
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 88
-	E : E Tand . E  (53)
+	E : E Tfois . E  (49)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 106
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 89
-	E : E Tor . E  (54)
+	E : E Tand . E  (54)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 107
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 90
-	For : Tfor TPo Decl1 Tpv . E Tpv Instr TPf BodyBoucle  (61)
+	E : E Tor . E  (55)
 
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
 
 	E  goto 108
-	Invoc  goto 69
+	Invoc  goto 70
 
 
 state 91
-	While : Twhile $$8 TPo E . TPf $$9 BodyBoucle  (26)
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	For : Tfor TPo Decl1 Tpv . E Tpv Instr TPf BodyBoucle  (62)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	TPf  shift 109
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
 	.  error
+
+	E  goto 109
+	Invoc  goto 70
 
 
 state 92
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
-	Params : E . ParamNext  (58)
-	ParamNext : .  (59)
+	While : Twhile $$9 TPo E . TPf $$10 BodyBoucle  (27)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tvir  shift 110
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	TPf  reduce 59
-
-	ParamNext  goto 111
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	TPf  shift 110
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	.  error
 
 
 state 93
-	Invoc : Tid TPo $$10 Params . TPf  (29)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+	Params : E . ParamNext  (59)
+	ParamNext : .  (60)
 
-	TPf  shift 112
-	.  error
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tvir  shift 111
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	TPf  reduce 60
+
+	ParamNext  goto 112
 
 
 state 94
-	Invoc : Tprint TPo E TPf .  (27)
+	Invoc : Tid TPo $$11 Params . TPf  (30)
 
-	.  reduce 27
-
-
-state 95
-	Return : Treturn E $$6 . Tpv  (19)
-
-	Tpv  shift 113
+	TPf  shift 113
 	.  error
 
 
-state 96
-	BodyFct : TAo $$4 Decls Instrs Return . TAf  (15)
+state 95
+	Invoc : Tprint TPo E TPf .  (28)
 
-	TAf  shift 114
+	.  reduce 28
+
+
+state 96
+	Return : Treturn E $$7 . Tpv  (20)
+
+	Tpv  shift 114
 	.  error
 
 
 state 97
-	E : TPo E TPf .  (55)
+	BodyFct : TAo $$5 Decls Instrs Return . TAf  (16)
 
-	.  reduce 55
+	TAf  shift 115
+	.  error
 
 
 state 98
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E Tcmp E .  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	E : TPo E TPf .  (56)
 
-	Tinf  shift 81
-	Tsup  shift 82
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tcmp  reduce 50
-	TPf  reduce 50
-	Tpv  reduce 50
-	Tvir  reduce 50
-	Tand  reduce 50
-	Tor  reduce 50
+	.  reduce 56
 
 
 state 99
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E Tinf E .  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E Tcmp E .  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
+	Tinf  shift 82
+	Tsup  shift 83
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
 	Tcmp  reduce 51
-	Tinf  reduce 51
-	Tsup  reduce 51
 	TPf  reduce 51
 	Tpv  reduce 51
 	Tvir  reduce 51
@@ -1210,21 +1198,21 @@ state 99
 
 
 state 100
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E Tsup E .  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E Tinf E .  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
 	Tcmp  reduce 52
 	Tinf  reduce 52
 	Tsup  reduce 52
@@ -1236,54 +1224,54 @@ state 100
 
 
 state 101
-	If : Tif TPo E TPf $$7 . BodyBoucle  (23)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E Tsup E .  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	TAo  shift 115
-	.  error
-
-	BodyBoucle  goto 116
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tcmp  reduce 53
+	Tinf  reduce 53
+	Tsup  reduce 53
+	TPf  reduce 53
+	Tpv  reduce 53
+	Tvir  reduce 53
+	Tand  reduce 53
+	Tor  reduce 53
 
 
 state 102
-	E : E . Tplus E  (46)
-	E : E Tplus E .  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	If : Tif TPo E TPf $$8 . BodyBoucle  (24)
 
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tcmp  reduce 46
-	Tinf  reduce 46
-	Tsup  reduce 46
-	TPf  reduce 46
-	Tpv  reduce 46
-	Tvir  reduce 46
-	Tplus  reduce 46
-	Tless  reduce 46
-	Tand  reduce 46
-	Tor  reduce 46
+	TAo  shift 116
+	.  error
+
+	BodyBoucle  goto 117
 
 
 state 103
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E Tless E .  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	E : E . Tplus E  (47)
+	E : E Tplus E .  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
-	Tdiv  shift 86
-	Tfois  shift 87
+	Tdiv  shift 87
+	Tfois  shift 88
 	Tcmp  reduce 47
 	Tinf  reduce 47
 	Tsup  reduce 47
@@ -1297,80 +1285,80 @@ state 103
 
 
 state 104
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E Tdiv E .  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E Tless E .  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tcmp  reduce 48
+	Tinf  reduce 48
+	Tsup  reduce 48
+	TPf  reduce 48
+	Tpv  reduce 48
+	Tvir  reduce 48
+	Tplus  reduce 48
+	Tless  reduce 48
+	Tand  reduce 48
+	Tor  reduce 48
+
+
+state 105
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E Tdiv E .  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+
+	.  reduce 50
+
+
+state 106
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E Tfois E .  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
 
 	.  reduce 49
 
 
-state 105
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E Tfois E .  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
-
-	.  reduce 48
-
-
-state 106
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E Tand E .  (53)
-	E : E . Tor E  (54)
-
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	TPf  reduce 53
-	Tpv  reduce 53
-	Tvir  reduce 53
-	Tand  reduce 53
-	Tor  reduce 53
-
-
 state 107
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
-	E : E Tor E .  (54)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E Tand E .  (54)
+	E : E . Tor E  (55)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
 	TPf  reduce 54
 	Tpv  reduce 54
 	Tvir  reduce 54
@@ -1379,228 +1367,254 @@ state 107
 
 
 state 108
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
-	For : Tfor TPo Decl1 Tpv E . Tpv Instr TPf BodyBoucle  (61)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+	E : E Tor E .  (55)
 
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tpv  shift 117
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	.  error
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	TPf  reduce 55
+	Tpv  reduce 55
+	Tvir  reduce 55
+	Tand  reduce 55
+	Tor  reduce 55
 
 
 state 109
-	While : Twhile $$8 TPo E TPf . $$9 BodyBoucle  (26)
-	$$9 : .  (25)
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+	For : Tfor TPo Decl1 Tpv E . Tpv Instr TPf BodyBoucle  (62)
 
-	.  reduce 25
-
-	$$9  goto 118
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tpv  shift 118
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	.  error
 
 
 state 110
-	ParamNext : Tvir . E ParamNext  (60)
-
-	TPo  shift 65
-	Tnumber  shift 66
-	Tid  shift 67
-	Tprint  shift 38
-	.  error
-
-	E  goto 119
-	Invoc  goto 69
-
-
-state 111
-	Params : E ParamNext .  (58)
-
-	.  reduce 58
-
-
-state 112
-	Invoc : Tid TPo $$10 Params TPf .  (29)
-
-	.  reduce 29
-
-
-state 113
-	Return : Treturn E $$6 Tpv .  (19)
-
-	.  reduce 19
-
-
-state 114
-	BodyFct : TAo $$4 Decls Instrs Return TAf .  (15)
-
-	.  reduce 15
-
-
-state 115
-	BodyBoucle : TAo . $$5 Decls Instrs TAf  (17)
-	$$5 : .  (16)
-
-	.  reduce 16
-
-	$$5  goto 120
-
-
-state 116
-	If : Tif TPo E TPf $$7 BodyBoucle .  (23)
-
-	.  reduce 23
-
-
-state 117
-	For : Tfor TPo Decl1 Tpv E Tpv . Instr TPf BodyBoucle  (61)
-
-	Tif  shift 34
-	Tfor  shift 35
-	Twhile  shift 36
-	Tid  shift 37
-	Tprint  shift 38
-	.  error
-
-	Instr  goto 121
-	If  goto 41
-	While  goto 42
-	Invoc  goto 43
-	Aff  goto 44
-	For  goto 45
-
-
-state 118
-	While : Twhile $$8 TPo E TPf $$9 . BodyBoucle  (26)
-
-	TAo  shift 115
-	.  error
-
-	BodyBoucle  goto 122
-
-
-state 119
-	E : E . Tplus E  (46)
-	E : E . Tless E  (47)
-	E : E . Tfois E  (48)
-	E : E . Tdiv E  (49)
-	E : E . Tcmp E  (50)
-	E : E . Tinf E  (51)
-	E : E . Tsup E  (52)
-	E : E . Tand E  (53)
-	E : E . Tor E  (54)
-	ParamNext : Tvir E . ParamNext  (60)
-	ParamNext : .  (59)
-
-	Tcmp  shift 80
-	Tinf  shift 81
-	Tsup  shift 82
-	Tvir  shift 110
-	Tplus  shift 84
-	Tless  shift 85
-	Tdiv  shift 86
-	Tfois  shift 87
-	Tand  shift 88
-	Tor  shift 89
-	TPf  reduce 59
-
-	ParamNext  goto 123
-
-
-state 120
-	BodyBoucle : TAo $$5 . Decls Instrs TAf  (17)
-	Decls : .  (34)
-
-	Tint  shift 24
-	Tconst  shift 25
-	Tif  reduce 34
-	Tfor  reduce 34
-	Twhile  reduce 34
-	TAf  reduce 34
-	Tid  reduce 34
-	Tprint  reduce 34
-
-	Decls  goto 124
-
-
-state 121
-	For : Tfor TPo Decl1 Tpv E Tpv Instr . TPf BodyBoucle  (61)
-
-	TPf  shift 125
-	.  error
-
-
-state 122
-	While : Twhile $$8 TPo E TPf $$9 BodyBoucle .  (26)
+	While : Twhile $$9 TPo E TPf . $$10 BodyBoucle  (27)
+	$$10 : .  (26)
 
 	.  reduce 26
 
+	$$10  goto 119
+
+
+state 111
+	ParamNext : Tvir . E ParamNext  (61)
+
+	TPo  shift 66
+	Tnumber  shift 67
+	Tid  shift 68
+	Tprint  shift 39
+	.  error
+
+	E  goto 120
+	Invoc  goto 70
+
+
+state 112
+	Params : E ParamNext .  (59)
+
+	.  reduce 59
+
+
+state 113
+	Invoc : Tid TPo $$11 Params TPf .  (30)
+
+	.  reduce 30
+
+
+state 114
+	Return : Treturn E $$7 Tpv .  (20)
+
+	.  reduce 20
+
+
+state 115
+	BodyFct : TAo $$5 Decls Instrs Return TAf .  (16)
+
+	.  reduce 16
+
+
+state 116
+	BodyBoucle : TAo . $$6 Decls Instrs TAf  (18)
+	$$6 : .  (17)
+
+	.  reduce 17
+
+	$$6  goto 121
+
+
+state 117
+	If : Tif TPo E TPf $$8 BodyBoucle .  (24)
+
+	.  reduce 24
+
+
+state 118
+	For : Tfor TPo Decl1 Tpv E Tpv . Instr TPf BodyBoucle  (62)
+
+	Tif  shift 35
+	Tfor  shift 36
+	Twhile  shift 37
+	Tid  shift 38
+	Tprint  shift 39
+	.  error
+
+	Instr  goto 122
+	If  goto 42
+	While  goto 43
+	Invoc  goto 44
+	Aff  goto 45
+	For  goto 46
+
+
+state 119
+	While : Twhile $$9 TPo E TPf $$10 . BodyBoucle  (27)
+
+	TAo  shift 116
+	.  error
+
+	BodyBoucle  goto 123
+
+
+state 120
+	E : E . Tplus E  (47)
+	E : E . Tless E  (48)
+	E : E . Tfois E  (49)
+	E : E . Tdiv E  (50)
+	E : E . Tcmp E  (51)
+	E : E . Tinf E  (52)
+	E : E . Tsup E  (53)
+	E : E . Tand E  (54)
+	E : E . Tor E  (55)
+	ParamNext : Tvir E . ParamNext  (61)
+	ParamNext : .  (60)
+
+	Tcmp  shift 81
+	Tinf  shift 82
+	Tsup  shift 83
+	Tvir  shift 111
+	Tplus  shift 85
+	Tless  shift 86
+	Tdiv  shift 87
+	Tfois  shift 88
+	Tand  shift 89
+	Tor  shift 90
+	TPf  reduce 60
+
+	ParamNext  goto 124
+
+
+state 121
+	BodyBoucle : TAo $$6 . Decls Instrs TAf  (18)
+	Decls : .  (35)
+
+	Tint  shift 25
+	Tconst  shift 26
+	Tif  reduce 35
+	Tfor  reduce 35
+	Twhile  reduce 35
+	TAf  reduce 35
+	Tid  reduce 35
+	Tprint  reduce 35
+
+	Decls  goto 125
+
+
+state 122
+	For : Tfor TPo Decl1 Tpv E Tpv Instr . TPf BodyBoucle  (62)
+
+	TPf  shift 126
+	.  error
+
 
 state 123
-	ParamNext : Tvir E ParamNext .  (60)
+	While : Twhile $$9 TPo E TPf $$10 BodyBoucle .  (27)
 
-	.  reduce 60
+	.  reduce 27
 
 
 state 124
-	BodyBoucle : TAo $$5 Decls . Instrs TAf  (17)
-	Instrs : .  (20)
-
-	Tif  shift 34
-	Tfor  shift 35
-	Twhile  shift 36
-	Tid  shift 37
-	Tprint  shift 38
-	TAf  reduce 20
-
-	Instrs  goto 126
-	Instr  goto 40
-	If  goto 41
-	While  goto 42
-	Invoc  goto 43
-	Aff  goto 44
-	For  goto 45
-
-
-state 125
-	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf . BodyBoucle  (61)
-
-	TAo  shift 115
-	.  error
-
-	BodyBoucle  goto 127
-
-
-state 126
-	BodyBoucle : TAo $$5 Decls Instrs . TAf  (17)
-
-	TAf  shift 128
-	.  error
-
-
-state 127
-	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle .  (61)
+	ParamNext : Tvir E ParamNext .  (61)
 
 	.  reduce 61
 
 
+state 125
+	BodyBoucle : TAo $$6 Decls . Instrs TAf  (18)
+	Instrs : .  (21)
+
+	Tif  shift 35
+	Tfor  shift 36
+	Twhile  shift 37
+	Tid  shift 38
+	Tprint  shift 39
+	TAf  reduce 21
+
+	Instrs  goto 127
+	Instr  goto 41
+	If  goto 42
+	While  goto 43
+	Invoc  goto 44
+	Aff  goto 45
+	For  goto 46
+
+
+state 126
+	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf . BodyBoucle  (62)
+
+	TAo  shift 116
+	.  error
+
+	BodyBoucle  goto 128
+
+
+state 127
+	BodyBoucle : TAo $$6 Decls Instrs . TAf  (18)
+
+	TAf  shift 129
+	.  error
+
+
 state 128
-	BodyBoucle : TAo $$5 Decls Instrs TAf .  (17)
+	For : Tfor TPo Decl1 Tpv E Tpv Instr TPf BodyBoucle .  (62)
 
-	.  reduce 17
+	.  reduce 62
 
 
-31 terminals, 34 nonterminals
-62 grammar rules, 129 states
+state 129
+	BodyBoucle : TAo $$6 Decls Instrs TAf .  (18)
+
+	.  reduce 18
+
+
+31 terminals, 35 nonterminals
+63 grammar rules, 130 states

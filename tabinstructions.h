@@ -18,7 +18,7 @@
 #define INFE 11
 #define SUP 12
 #define SUPE 13 
-#define JMP 14
+#define JMPR 14
 #define JMPC 15
 
 int set_PC();
