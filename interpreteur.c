@@ -103,7 +103,9 @@ int readFile(){
 		printf("erreur à l'ouverture du file");
 	}
 	fgets(line,sizeof(line),file);
-	sscanf(line,"%d",&PC);
+	//sscanf(line,"%d",&PC);
+	int trash=0;
+	sscanf(line,"%d",&trash);
 	 int NB;
 	 while (fgets(line, sizeof(line), file)) {
         /* note that fgets don't strip the terminating \n, checking its
