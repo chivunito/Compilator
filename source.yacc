@@ -212,7 +212,17 @@ E : Tnumber
 			$$=$1; 
 		}
 	| E Tinf E
+		{
+			inf($1,$3);
+			pull_symbol();  
+			$$=$1; 
+		}
 	| E Tsup E
+		{
+			sup($1,$3);
+			pull_symbol();  
+			$$=$1; 
+		}
 	| E Tand E
 	| E Tor E
 	| TPo E TPf

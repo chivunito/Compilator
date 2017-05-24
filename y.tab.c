@@ -776,14 +776,30 @@ case 51:
 			yyval.nb=yystack.l_mark[-2].nb; 
 		}
 break;
+case 52:
+#line 215 "source.yacc"
+	{
+			inf(yystack.l_mark[-2].nb,yystack.l_mark[0].nb);
+			pull_symbol();  
+			yyval.nb=yystack.l_mark[-2].nb; 
+		}
+break;
+case 53:
+#line 221 "source.yacc"
+	{
+			sup(yystack.l_mark[-2].nb,yystack.l_mark[0].nb);
+			pull_symbol();  
+			yyval.nb=yystack.l_mark[-2].nb; 
+		}
+break;
 case 57:
-#line 219 "source.yacc"
+#line 229 "source.yacc"
 	{
 		yyval.nb=add_var_temp(1);
 		instruction(STORE,yyval.nb,r5,-1);
 	}
 break;
-#line 787 "y.tab.c"
+#line 803 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

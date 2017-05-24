@@ -82,6 +82,33 @@ int execute(){
 		memory[A+registers[15]]=registers[B];
 		PC++;
 	}
+	else if (OP==EQU) {  //COPIE
+		if (registers[B]==registers[C] ) {
+			registers[A]=1;
+		}	
+		else {
+			registers[A]=0;
+		}
+		PC++;
+	}
+	else if (OP==SUP) {  //COPIE
+		if (registers[B]>registers[C] ) {
+			registers[A]=1;
+		}	
+		else {
+			registers[A]=0;
+		}
+		PC++;
+	}
+	else if (OP==INF) {  //COPIE
+		if (registers[B]<registers[C] ) {
+			registers[A]=1;
+		}	
+		else {
+			registers[A]=0;
+		}
+		PC++;
+	}
 	else if(OP==JMPR){ //STORE
 		PC = registers[A];
 	}

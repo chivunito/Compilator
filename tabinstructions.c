@@ -133,6 +133,34 @@ void mul(int A, int B) {
  		instruction(STORE,A,r0,0); // STORE $1 r0    [$1] <- r0
  }
 
+ void sup(int A, int B) {
+ 		instruction(LOAD,r0,A,0);  // LOAD r0 $1
+ 		instruction(LOAD,r1,B,0);  // LOAD r1 $3
+ 		instruction(SUP,r0,r0,r1);  // EQU  r0 r1 
+ 		instruction(STORE,A,r0,0); // STORE $1 r0    [$1] <- r0
+ }
+
+  void supe(int A, int B) {
+ 		instruction(LOAD,r0,A,0);  // LOAD r0 $1
+ 		instruction(LOAD,r1,B,0);  // LOAD r1 $3
+ 		instruction(SUPE,r0,r0,r1);  // EQU  r0 r1 
+ 		instruction(STORE,A,r0,0); // STORE $1 r0    [$1] <- r0
+ }
+
+  void inf(int A, int B) {
+ 		instruction(LOAD,r0,A,0);  // LOAD r0 $1
+ 		instruction(LOAD,r1,B,0);  // LOAD r1 $3
+ 		instruction(INF,r0,r0,r1);  // EQU  r0 r1 
+ 		instruction(STORE,A,r0,0); // STORE $1 r0    [$1] <- r0
+ }
+
+  void infe(int A, int B) {
+ 		instruction(LOAD,r0,A,0);  // LOAD r0 $1
+ 		instruction(LOAD,r1,B,0);  // LOAD r1 $3
+ 		instruction(INFE,r0,r0,r1);  // EQU  r0 r1 
+ 		instruction(STORE,A,r0,0); // STORE $1 r0    [$1] <- r0
+ }
+
 /*_________________ PRINTERS __________________________________*/
 void print_instruction(int tab[4]){
  			printf("[0x%s|%d|%d|%d]\n",codeinstruc[tab[0]],tab[1],tab[2],tab[3]);

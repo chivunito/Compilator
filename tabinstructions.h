@@ -47,6 +47,14 @@ void mul(int A, int B) ;
 
 void equ(int A, int B);
 
+void sup(int A, int B);
+
+void supe(int A, int B);
+
+void inf(int A, int B);
+
+void infe(int A, int B);
+
 int jump_if(int E) ;
 
 int maj_if_jmpc(int instruction2modify);
